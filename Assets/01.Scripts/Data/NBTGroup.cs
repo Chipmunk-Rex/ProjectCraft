@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
 
 public class NBTGroup : NBT
@@ -31,9 +32,33 @@ public class NBTGroup : NBT
     {
         return Group.ContainsKey(key) ? Group[key] : null;
     }
-    public NBTGroup(string name, NBTType type) : base(name, NBTType.Group, null)
+    public new void Serialize(BinaryWriter writer)
     {
-        GroupType = type;
+        foreach (var tag in Group.Values)
+        {
+            tag.Serialize(writer);
+        }
+        writer.Write((byte)NBTType.End);
+    }
+
+    // 역직렬화
+    public static NBTGroup Deserialize(BinaryReader reader, string name)
+    {
+        NBTGroup compound = new NBTGroup(name);
+
+        while (true)
+        {
+            NBTType type = (NBTType)reader.ReadByte(); // 태그 타입 읽기
+            if (type == NBTType.End) break; // 종료 태그 확인
+
+            NBT nbtData = NBT.Deserialize(reader); // 태그 역직렬화
+            compound.Add(nbtData);
+        }
+
+        return compound;
+    }
+    public NBTGroup(string name) : base(name, NBTType.Group, null)
+    {
         Group = new Dictionary<string, NBT>();
     }
 }

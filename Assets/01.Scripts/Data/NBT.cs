@@ -73,4 +73,47 @@ public class NBT
                 throw new NotSupportedException($"Unsupported tag type: {Type}");
         }
     }
+    public static NBT Deserialize(BinaryReader reader)
+    {
+        NBTType type = (NBTType)reader.ReadByte(); 
+        string name = reader.ReadString(); 
+
+        switch (type)
+        {
+            case NBTType.Byte:
+                return new NBT(name, type, reader.ReadByte());
+            case NBTType.Short:
+                return new NBT(name, type, reader.ReadInt16());
+            case NBTType.Int:
+                return new NBT(name, type, reader.ReadInt32());
+            case NBTType.Long:
+                return new NBT(name, type, reader.ReadInt64());
+            case NBTType.Float:
+                return new NBT(name, type, reader.ReadSingle());
+            case NBTType.Double:
+                return new NBT(name, type, reader.ReadDouble());
+            case NBTType.String:
+                return new NBT(name, type, reader.ReadString());
+            case NBTType.Byte_Array:
+                int byteArrayLength = reader.ReadInt32();
+                byte[] byteArray = reader.ReadBytes(byteArrayLength);
+                return new NBT(name, type, byteArray);
+            case NBTType.Int_Array:
+                int intArrayLength = reader.ReadInt32();
+                int[] intArray = new int[intArrayLength];
+                for (int i = 0; i < intArrayLength; i++) intArray[i] = reader.ReadInt32();
+                return new NBT(name, type, intArray);
+            case NBTType.Long_Array:
+                int longArrayLength = reader.ReadInt32();
+                long[] longArray = new long[longArrayLength];
+                for (int i = 0; i < longArrayLength; i++) longArray[i] = reader.ReadInt64();
+                return new NBT(name, type, longArray);
+            case NBTType.List:
+                return NBTList.Deserialize(reader, name);
+            case NBTType.Group:
+                return NBTGroup.Deserialize(reader, name);
+            default:
+                throw new NotSupportedException($"Unsupported tag type: {type}");
+        }
+    }
 }
