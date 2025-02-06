@@ -14,11 +14,8 @@ public static class BlockHelper
         Direction.up
     };
 
-    public static MeshData GetMeshData
-        (ChunkData chunk, int x, int y, int z, MeshData meshData, BlockType blockType)
+    public static MeshData GetMeshData(ChunkData chunk, int x, int y, int z, MeshData meshData)
     {
-        if (blockType == BlockType.Air || blockType == BlockType.Nothing)
-            return meshData;
 
         foreach (Direction direction in directions)
         {
@@ -44,7 +41,7 @@ public static class BlockHelper
         return meshData;
     }
 
-    public static MeshData GetFaceDataIn(Direction direction, ChunkData chunk, int x, int y, int z, MeshData meshData, BlockType blockType)
+    public static MeshData GetFaceDataIn(Direction direction, ChunkData chunk, int x, int y, int z, MeshData meshData)
     {
         GetFaceVertices(direction, x, y, z, meshData, blockType);
         meshData.AddQuadTriangles(BlockDataManager.blockTextureDataDictionary[blockType].generatesCollider);
@@ -54,7 +51,7 @@ public static class BlockHelper
         return meshData;
     }
 
-    public static void GetFaceVertices(Direction direction, int x, int y, int z, MeshData meshData, BlockType blockType)
+    public static void GetFaceVertices(Direction direction, int x, int y, int z, MeshData meshData)
     {
         var generatesCollider = BlockDataManager.blockTextureDataDictionary[blockType].generatesCollider;
         //order of vertices matters for the normals and how we render the mesh
