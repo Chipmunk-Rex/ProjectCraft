@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,6 +12,7 @@ public class ChunkRenderer : MonoBehaviour
     MeshFilter meshFilter;
     MeshCollider meshCollider;
     Mesh mesh;
+
 #if UNITY_EDITOR
     public bool showGizmos = false;
 #endif
@@ -48,10 +50,20 @@ public class ChunkRenderer : MonoBehaviour
         {
             if (!Application.isPlaying || ChunkData == null)
                 return;
-                
+
             Gizmos.color = Color.red;
             Gizmos.DrawWireCube(transform.position, new Vector3(ChunkData.ChunkSize, ChunkData.ChunkHeight, ChunkData.ChunkSize));
         }
+    }
+
+    internal void InitializeChunk(ChunkData data)
+    {
+        this.ChunkData = data;
+    }
+
+    internal void UpdateChunk(MeshData meshData)
+    {
+        RenderMesh(meshData);
     }
 #endif
 }

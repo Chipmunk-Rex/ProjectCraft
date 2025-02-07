@@ -52,6 +52,28 @@ public class MeshData : ScriptableObject
         }
 
     }
+
+    internal void AddQuadTriangles(object generatesCollider)
+    {
+        triangles.Add(vertices.Count - 4);
+        triangles.Add(vertices.Count - 3);
+        triangles.Add(vertices.Count - 2);
+
+        triangles.Add(vertices.Count - 4);
+        triangles.Add(vertices.Count - 2);
+        triangles.Add(vertices.Count - 1);
+
+        if (quadGeneratesCollider)
+        {
+            colliderTriangles.Add(colliderVertices.Count - 4);
+            colliderTriangles.Add(colliderVertices.Count - 3);
+            colliderTriangles.Add(colliderVertices.Count - 2);
+            colliderTriangles.Add(colliderVertices.Count - 4);
+            colliderTriangles.Add(colliderVertices.Count - 2);
+            colliderTriangles.Add(colliderVertices.Count - 1);
+        }
+    }
+
     public MeshData(bool isMainMesh)
     {
         if (isMainMesh)

@@ -59,7 +59,7 @@ public class Chunk
         else
         {
             Debug.LogError("Block out of range");
-            return null;
+            return chunkData.world.GetBlockFromChunkCoordinates(chunkData, localPosition);
         }
     }
     public static int GetIndexFromPosition(ChunkData chunkData, Vector3Int localPosition)
@@ -80,6 +80,7 @@ public class Chunk
         {
             meshData = block.GetBlockMeshData(chunkData, localPosition, meshData);
         });
+        return meshData;
     }
 }
 

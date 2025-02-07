@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public static class BlockHelper
+public static class BlockExtension
 {
     private static Direction[] directions =
     {
@@ -41,19 +41,20 @@ public static class BlockHelper
         return meshData;
     }
 
-    public static MeshData GetFaceDataIn(Direction direction, ChunkData chunk, int x, int y, int z, MeshData meshData)
+    public static MeshData GetFaceDataIn(this Block block, Direction direction, ChunkData chunk, int x, int y, int z, MeshData meshData)
     {
-        GetFaceVertices(direction, x, y, z, meshData, blockType);
-        meshData.AddQuadTriangles(BlockDataManager.blockTextureDataDictionary[blockType].generatesCollider);
+        bool generatesCollider = block.blockSO.generatesCollider;
+        GetFaceVertices(block, direction, x, y, z, meshData);
+        meshData.AddQuadTriangles(generatesCollider);
         meshData.uv.AddRange(FaceUVs(direction, blockType));
 
 
         return meshData;
     }
 
-    public static void GetFaceVertices(Direction direction, int x, int y, int z, MeshData meshData)
+    public static void GetFaceVertices(this Block block, Direction direction, int x, int y, int z, MeshData meshData)
     {
-        var generatesCollider = BlockDataManager.blockTextureDataDictionary[blockType].generatesCollider;
+        bool generatesCollider = block.blockSO.generatesCollider;
         //order of vertices matters for the normals and how we render the mesh
         switch (direction)
         {
@@ -99,27 +100,27 @@ public static class BlockHelper
         }
     }
 
-    public static Vector2[] FaceUVs(Direction direction, BlockType blockType)
+    public static Vector2[] FaceUVs(this Block block, Direction direction)
     {
         Vector2[] UVs = new Vector2[4];
-        var tilePos = TexturePosition(direction, blockType);
+        Vector2Int tilePos = TexturePosition(block, direction);
 
-        UVs[0] = new Vector2(BlockDataManager.tileSizeX * tilePos.x + BlockDataManager.tileSizeX - BlockDataManager.textureOffset,
-            BlockDataManager.tileSizeY * tilePos.y + BlockDataManager.textureOffset);
+        UVs[0] = new Vector2(block.blockSO.textureSizeX * tilePos.x + block.blockSO.textureSizeX - block.blockSO.textureOffset,
+            block.blockSO.textureSizeY * tilePos.y + block.blockSO.textureOffset);
 
-        UVs[1] = new Vector2(BlockDataManager.tileSizeX * tilePos.x + BlockDataManager.tileSizeX - BlockDataManager.textureOffset,
-            BlockDataManager.tileSizeY * tilePos.y + BlockDataManager.tileSizeY - BlockDataManager.textureOffset);
+        UVs[1] = new Vector2(block.blockSO.textureSizeX * tilePos.x + block.blockSO.textureSizeX - block.blockSO.textureOffset,
+            block.blockSO.textureSizeY * tilePos.y + block.blockSO.textureSizeY - block.blockSO.textureOffset);
 
-        UVs[2] = new Vector2(BlockDataManager.tileSizeX * tilePos.x + BlockDataManager.textureOffset,
-            BlockDataManager.tileSizeY * tilePos.y + BlockDataManager.tileSizeY - BlockDataManager.textureOffset);
+        UVs[2] = new Vector2(block.blockSO.textureSizeX * tilePos.x + block.blockSO.textureOffset,
+            block.blockSO.textureSizeY * tilePos.y + block.blockSO.textureSizeY - block.blockSO.textureOffset);
 
-        UVs[3] = new Vector2(BlockDataManager.tileSizeX * tilePos.x + BlockDataManager.textureOffset,
-            BlockDataManager.tileSizeY * tilePos.y + BlockDataManager.textureOffset);
+        UVs[3] = new Vector2(block.blockSO.textureSizeX * tilePos.x + block.blockSO.textureOffset,
+            block.blockSO.textureSizeY * tilePos.y + block.blockSO.textureOffset);
 
         return UVs;
     }
 
-    public static Vector2Int TexturePosition(Direction direction, BlockType blockType)
+    public static Vector2Int TexturePosition(Block block, Direction direction)
     {
         return direction switch
         {

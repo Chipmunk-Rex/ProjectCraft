@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -35,8 +36,25 @@ public class World : MonoBehaviour
         foreach (ChunkData data in chunks.Values)
         {
             MeshData meshData = Chunk.GetChunkMeshData(data);
+            GameObject chunkObject = Instantiate(chunkPrefab, data.position, Quaternion.identity);
+            ChunkRenderer chunkRenderer = chunkObject.GetComponent<ChunkRenderer>();
+            chunkRenderers.Add(data.position, chunkRenderer);
+            chunkRenderer.InitializeChunk(data);
+            chunkRenderer.UpdateChunk(meshData);
         }
     }
+
+    internal Block GetBlockFromChunkCoordinates(ChunkData chunkData, Vector3Int localPosition)
+    {
+        Vector3Int pos = chunkData.position + localPosition;
+        Vector3Int chunkPos = chunkData.position;
+        if (chunks.TryGetValue(chunkPos, out ChunkData data))
+        {
+            return Chunk.GetBlockFromChunkCoordinates(data, localPosition);
+        }
+        return null;
+    }
+
     private void GenerateVoxels(ChunkData data)
     {
         data.blocks = new Block[chunkSize * chunkHeight * chunkSize];

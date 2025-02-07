@@ -8,7 +8,7 @@ public class ChunkData
     public int ChunkSize = 16;
     public int ChunkHeight = 256;
     public Vector3Int position;
-    private World world;
+    public World world;
 
     public ChunkData(int chunkSize, int chunkHeight, World world, Vector3Int position)
     {

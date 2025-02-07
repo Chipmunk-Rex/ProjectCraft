@@ -5,17 +5,18 @@ using UnityEngine;
 
 public class Block
 {
-    MeshData meshData;
-    BlockSO blockSO;
-
+    public MeshData meshData { get; set; }
+    public BlockSO blockSO { get; set; }
+    public Sprite sprite { get; set; }
     public Block(BlockSO blockSO)
     {
         this.blockSO = blockSO;
     }
 
-    internal MeshData GetBlockMeshData(ChunkData chunkData, Vector3Int localPosition, MeshData meshData)
+    public MeshData GetBlockMeshData(ChunkData chunkData, Vector3Int localPosition, MeshData meshData)
     {
-        
+        meshData = BlockExtension.GetMeshData(chunkData, localPosition.x, localPosition.y, localPosition.z, meshData);
+        return meshData;
     }
 
     internal class FaceDirection
