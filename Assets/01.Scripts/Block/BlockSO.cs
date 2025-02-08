@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[CreateAssetMenu(fileName = "Block", menuName = "Block/BlockSO", order = 1)]
 public class BlockSO : BaseBlockSO
 {
     public string blockName;

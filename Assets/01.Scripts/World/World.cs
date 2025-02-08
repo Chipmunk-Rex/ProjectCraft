@@ -12,9 +12,10 @@ public class World : MonoBehaviour
     Dictionary<Vector3Int, ChunkData> chunks = new Dictionary<Vector3Int, ChunkData>();
     Dictionary<Vector3Int, ChunkRenderer> chunkRenderers = new Dictionary<Vector3Int, ChunkRenderer>();
 
-    BlockSO grassBlockSO;
+    [SerializeField] BlockSO grassBlockSO;
 
     [SerializeField] int worldSize = 100;
+    [ContextMenu("Generate World")]
     public void GenerateWorld()
     {
         foreach (ChunkRenderer chunkRenderer in chunkRenderers.Values)

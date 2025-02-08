@@ -19,25 +19,23 @@ public static class BlockExtension
 
         foreach (Direction direction in directions)
         {
-            var neighbourBlockCoordinates = new Vector3Int(x, y, z) + direction.GetVector();
-            var neighbourBlockType = Chunk.GetBlockFromChunkCoordinates(chunk, neighbourBlockCoordinates);
+            var neighbourBlockCoordinates = new Vector3Int(x, y, z) + direction.DirectionToVector();
+            Block neighbourBlock = Chunk.GetBlockFromChunkCoordinates(chunk, neighbourBlockCoordinates);
 
-            if (neighbourBlockType != BlockType.Nothing && BlockDataManager.blockTextureDataDictionary[neighbourBlockType].isSolid == false)
-            {
+            // if (neighbourBlockType != BlockType.Nothing && BlockDataManager.blockTextureDataDictionary[neighbourBlockType].isSolid == false)
+            // {
 
-                if (blockType == BlockType.Water)
-                {
-                    if (neighbourBlockType == BlockType.Air)
-                        meshData.waterMesh = GetFaceDataIn(direction, chunk, x, y, z, meshData.waterMesh, blockType);
-                }
-                else
-                {
-                    meshData = GetFaceDataIn(direction, chunk, x, y, z, meshData, blockType);
-                }
+            // if (blockType == BlockType.Water)
+            // {
+            //     if (neighbourBlockType == BlockType.Air)
+            //         meshData.waterMesh = GetFaceDataIn(direction, chunk, x, y, z, meshData.waterMesh, blockType);
+            // }
+            // else
+            // {
+            meshData = GetFaceDataIn(neighbourBlock, direction, chunk, x, y, z, meshData);
+            // }
 
-            }
         }
-
         return meshData;
     }
 
@@ -46,7 +44,7 @@ public static class BlockExtension
         bool generatesCollider = block.blockSO.generatesCollider;
         GetFaceVertices(block, direction, x, y, z, meshData);
         meshData.AddQuadTriangles(generatesCollider);
-        meshData.uv.AddRange(FaceUVs(direction, blockType));
+        meshData.uv.AddRange(FaceUVs(block, direction));
 
 
         return meshData;
@@ -124,9 +122,9 @@ public static class BlockExtension
     {
         return direction switch
         {
-            Direction.up => BlockDataManager.blockTextureDataDictionary[blockType].up,
-            Direction.down => BlockDataManager.blockTextureDataDictionary[blockType].down,
-            _ => BlockDataManager.blockTextureDataDictionary[blockType].side
+            // Direction.up => BlockDataManager.blockTextureDataDictionary[blockType].up,
+            // Direction.down => BlockDataManager.blockTextureDataDictionary[blockType].down,
+            // _ => BlockDataManager.blockTextureDataDictionary[blockType].side
         };
     }
 }

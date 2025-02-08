@@ -53,7 +53,7 @@ public class MeshData : ScriptableObject
 
     }
 
-    internal void AddQuadTriangles(object generatesCollider)
+    internal void AddQuadTriangles(bool generatesCollider)
     {
         triangles.Add(vertices.Count - 4);
         triangles.Add(vertices.Count - 3);
@@ -63,7 +63,7 @@ public class MeshData : ScriptableObject
         triangles.Add(vertices.Count - 2);
         triangles.Add(vertices.Count - 1);
 
-        if (quadGeneratesCollider)
+        if (generatesCollider)
         {
             colliderTriangles.Add(colliderVertices.Count - 4);
             colliderTriangles.Add(colliderVertices.Count - 3);
