@@ -44,13 +44,20 @@ public class World : MonoBehaviour
             chunkRenderer.UpdateChunk(meshData);
         }
     }
-
+    int tryCount = 0;
     internal Block GetBlockFromChunkCoordinates(ChunkData chunkData, Vector3Int localPosition)
     {
         Vector3Int pos = chunkData.position + localPosition;
         Vector3Int chunkPos = chunkData.position;
         if (chunks.TryGetValue(chunkPos, out ChunkData data))
         {
+            Debug.Log(localPosition);
+            Debug.Log(pos);
+            if (tryCount++ > 50)
+            {
+                Debug.LogError("Infinite loop");
+                return null;
+            }
             return Chunk.GetBlockFromChunkCoordinates(data, localPosition);
         }
         return null;
