@@ -6,12 +6,12 @@ public static class BlockExtension
 {
     private static Direction[] directions =
     {
-        Direction.backwards,
-        Direction.down,
         Direction.foreward,
+        Direction.backwards,
         Direction.left,
         Direction.right,
-        Direction.up
+        Direction.up,
+        Direction.down,
     };
 
     public static MeshData GetMeshData(ChunkData chunk, int x, int y, int z, MeshData meshData)
@@ -20,8 +20,12 @@ public static class BlockExtension
         foreach (Direction direction in directions)
         {
             var neighbourBlockCoordinates = new Vector3Int(x, y, z) + direction.DirectionToVector();
+            Debug.Log(neighbourBlockCoordinates + "  ne " + direction);
             Block neighbourBlock = Chunk.GetBlockFromChunkCoordinates(chunk, neighbourBlockCoordinates);
-
+            if (neighbourBlock != null && true)
+            {
+                meshData = GetFaceDataIn(neighbourBlock, direction, chunk, x, y, z, meshData);
+            }
             // if (neighbourBlockType != BlockType.Nothing && BlockDataManager.blockTextureDataDictionary[neighbourBlockType].isSolid == false)
             // {
 
@@ -32,7 +36,6 @@ public static class BlockExtension
             // }
             // else
             // {
-            meshData = GetFaceDataIn(neighbourBlock, direction, chunk, x, y, z, meshData);
             // }
 
         }
@@ -120,11 +123,16 @@ public static class BlockExtension
 
     public static Vector2Int TexturePosition(Block block, Direction direction)
     {
-        return direction switch
-        {
-            // Direction.up => BlockDataManager.blockTextureDataDictionary[blockType].up,
-            // Direction.down => BlockDataManager.blockTextureDataDictionary[blockType].down,
-            // _ => BlockDataManager.blockTextureDataDictionary[blockType].side
-        };
+        return Vector2Int.zero;
+        // return direction switch
+        // {
+        //     Direction.up => block.blockSO.up,
+        //     Direction.down => block.blockSO.down,
+        //     Direction.left => block.blockSO.left,
+        //     Direction.right => block.blockSO.right,
+        //     Direction.foreward => block.blockSO.foreward,
+        //     Direction.backwards => block.blockSO.backwards,
+        //     _ => new Vector2Int(0, 0),
+        // };
     }
 }

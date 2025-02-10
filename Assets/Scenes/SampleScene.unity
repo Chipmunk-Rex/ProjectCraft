@@ -591,11 +591,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   chunkSize: 16
-  chunkHeight: 256
+  chunkHeight: 32
   chunkPrefab: {fileID: 3654644699622815354, guid: f64aa1e5551db5e47ae3e33f0dfaf632,
     type: 3}
   grassBlockSO: {fileID: 11400000, guid: e74aff877e93eb24598f3477aed14ee1, type: 2}
-  worldSize: 2
+  worldSize: 1
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

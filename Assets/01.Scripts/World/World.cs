@@ -29,6 +29,7 @@ public class World : MonoBehaviour
             for (int y = 0; y < worldSize; y++)
             {
                 ChunkData data = new ChunkData(chunkSize, chunkHeight, this, new Vector3Int(x * chunkSize, 0, y * chunkSize));
+                Debug.Log(Chunk.GetPositionFormIndex(data, 0));
                 GenerateVoxels(data);
                 chunks.Add(data.position, data);
             }
@@ -42,13 +43,14 @@ public class World : MonoBehaviour
             chunkRenderers.Add(data.position, chunkRenderer);
             chunkRenderer.InitializeChunk(data);
             chunkRenderer.UpdateChunk(meshData);
+
         }
     }
     int tryCount = 0;
     internal Block GetBlockFromChunkCoordinates(ChunkData chunkData, Vector3Int localPosition)
     {
         Vector3Int pos = chunkData.position + localPosition;
-        Vector3Int chunkPos = chunkData.position;
+        Vector3Int chunkPos = Chunk.GetChunkPositionFromBlockCoords(chunkSize, chunkHeight, pos);
         if (chunks.TryGetValue(chunkPos, out ChunkData data))
         {
             Debug.Log(localPosition);

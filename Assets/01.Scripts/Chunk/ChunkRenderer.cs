@@ -38,10 +38,11 @@ public class ChunkRenderer : MonoBehaviour
         mesh.uv = meshData.uv.Concat(meshData.waterMesh.uv).ToArray();
         mesh.RecalculateNormals();
 
-        Mesh collisionMesh = meshCollider.sharedMesh;
+        Mesh collisionMesh = new Mesh();
         collisionMesh.Clear();
         collisionMesh.vertices = meshData.colliderVertices.ToArray();
         collisionMesh.triangles = meshData.colliderTriangles.ToArray();
+        meshCollider.sharedMesh = collisionMesh;
     }
 #if UNITY_EDITOR
     private void OnDrawGizmos()

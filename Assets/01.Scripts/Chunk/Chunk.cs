@@ -14,7 +14,7 @@ public class Chunk
             action(localPosition, block);
         }
     }
-    private static Vector3Int GetPositionFormIndex(ChunkData chunkData, int index)
+    public static Vector3Int GetPositionFormIndex(ChunkData chunkData, int index)
     {
         int x = index % chunkData.ChunkSize;
         int y = (index / chunkData.ChunkSize) % chunkData.ChunkHeight;
@@ -23,6 +23,7 @@ public class Chunk
     }
     public static bool InRange(ChunkData chunkData, Vector3Int localPosition)
     {
+        Debug.Log("Local position: " + localPosition);
         if (localPosition.x < 0 || localPosition.x >= chunkData.ChunkSize)
             return false;
         if (localPosition.y < 0 || localPosition.y >= chunkData.ChunkHeight)
@@ -31,10 +32,11 @@ public class Chunk
             return false;
         return true;
     }
-    private bool InRange(ChunkData chunkData, int index)
+    private static bool InRange(ChunkData chunkData, int axisCoordinate)
     {
-        if (index < 0 || index >= chunkData.ChunkSize)
+        if (axisCoordinate < 0 || axisCoordinate >= chunkData.ChunkSize)
             return false;
+
         return true;
     }
     public static void SetBlock(ChunkData chunkData, Vector3Int localPosition, Block block)
@@ -54,6 +56,7 @@ public class Chunk
         if (InRange(chunkData, localPosition))
         {
             int index = GetIndexFromPosition(chunkData, localPosition);
+            Debug.Log("Index: " + index);
             return chunkData.blocks[index];
         }
         else
@@ -70,11 +73,19 @@ public class Chunk
     {
         return new Vector3Int(localPosition.x % chunkData.ChunkSize, localPosition.y % chunkData.ChunkHeight, localPosition.z % chunkData.ChunkSize);
     }
-
+    public static Vector3Int GetChunkPositionFromBlockCoords(int chunkSize, int chunkHeight, Vector3Int cordinate)
+    {
+        Vector3Int pos = new Vector3Int
+        {
+            x = Mathf.FloorToInt(cordinate.x / (float)chunkSize) * chunkSize,
+            y = Mathf.FloorToInt(cordinate.y / (float)chunkHeight) * chunkHeight,
+            z = Mathf.FloorToInt(cordinate.z / (float)chunkSize) * chunkSize
+        };
+        return pos;
+    }
     public static MeshData GetChunkMeshData(ChunkData chunkData)
     {
         MeshData meshData = new MeshData(true);
-
 
         LoopThroughTheBlocks(chunkData, (localPosition, block) =>
         {
