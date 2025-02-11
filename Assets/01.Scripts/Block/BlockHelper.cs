@@ -20,7 +20,6 @@ public static class BlockExtension
         foreach (Direction direction in directions)
         {
             var neighbourBlockCoordinates = new Vector3Int(x, y, z) + direction.DirectionToVector();
-            Debug.Log(neighbourBlockCoordinates + "  ne " + direction);
             Block neighbourBlock = Chunk.GetBlockFromChunkCoordinates(chunk, neighbourBlockCoordinates);
             if (neighbourBlock != null && true)
             {

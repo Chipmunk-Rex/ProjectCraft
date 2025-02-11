@@ -23,7 +23,6 @@ public class Chunk
     }
     public static bool InRange(ChunkData chunkData, Vector3Int localPosition)
     {
-        Debug.Log("Local position: " + localPosition);
         if (localPosition.x < 0 || localPosition.x >= chunkData.ChunkSize)
             return false;
         if (localPosition.y < 0 || localPosition.y >= chunkData.ChunkHeight)
@@ -56,7 +55,6 @@ public class Chunk
         if (InRange(chunkData, localPosition))
         {
             int index = GetIndexFromPosition(chunkData, localPosition);
-            Debug.Log("Index: " + index);
             return chunkData.blocks[index];
         }
         else
